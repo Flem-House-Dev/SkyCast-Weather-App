@@ -1,0 +1,7 @@
+:root {
+    --test-outline: 2px solid red;
+}
+
+/* * {
+    outline: var(--test-outline);
+} */

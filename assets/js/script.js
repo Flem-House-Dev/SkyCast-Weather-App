@@ -1,16 +1,13 @@
-// let cityName = "atlanta";
-// let stateName = "ga";
+// Vars ----------------------------------------
 let cityInputEl = $('#city-input');
 let citySelectFormEl = $('#city-select');
-
 let lat;
 let lon;
 
-
-// getCoordingates(cityName);
+// ------------------------------------------------------------------
 
 function getCoordingates(city) {
-    // console.log(city);
+
     const requestUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},us&limit=5&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
 
     fetch(requestUrl)
@@ -29,13 +26,12 @@ function getCoordingates(city) {
             console.log(lon);
 
             getCurrentWeather(lat, lon);
-
+            getForecast(lat, lon)
         })
-
 };
 
-
 // ---------------------------------------------------------------------------------
+
 function getCurrentWeather(lat, lon) {
     const requestUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
 
@@ -53,6 +49,24 @@ function getCurrentWeather(lat, lon) {
         });
 };
 
+// ---------------------------------------------------------------------------------
+
+function getForecast(lat, lon) {
+    const requestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
+
+    fetch(requestUrl)
+        .then(function (response) {
+            return response.json();
+        })
+
+        .then(function (data) {
+            console.log('Get forecast .....................................');
+            console.log(data);
+        });
+};
+
+// ---------------------------------------------------------------------------------
+
 function handleFormSubmit(event) {
     event.preventDefault();
 
@@ -62,11 +76,12 @@ function handleFormSubmit(event) {
     getCoordingates(cityInputEl.val());
 }
 
+// ---------------------------------------------------------------------------------
+
 citySelectFormEl.on('submit', handleFormSubmit);
+
 // -----------------------------------------------
 
 $(document).ready(function () {
 
 });
-
-
