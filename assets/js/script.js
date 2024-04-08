@@ -4,7 +4,6 @@ let citySelectFormEl = $('#city-select');
 let lat;
 let lon;
 
-
 // ------------------------------------------------------------------
 
 function getCoordingates(city, callback) {
@@ -25,6 +24,10 @@ function getCoordingates(city, callback) {
             console.log(city);
             console.log(lat);
             console.log(lon);
+
+            let printedCityName = data[0].name;
+            localStorage.setItem('printedCity', JSON.stringify(printedCityName));
+            $('#current-city').text(printedCityName);
 
             getCurrentWeather(lat, lon);
             getForecast(lat, lon, callback)
@@ -47,6 +50,7 @@ function getCurrentWeather(lat, lon) {
 
             let currentTemp = parseInt(data.main.temp);
             $('#current-temp').text(`Current temp: ${currentTemp}° F`);
+
         });
 };
 
@@ -68,12 +72,6 @@ function getForecast(lat, lon, callback) {
                 let forecast = data.list[i].main
                 let day = `Day ${i / 8 + 1}:`;
 
-                // if (i === 0) {
-                //     $('.card-text').text(`Temp for the day: ${forecast.temp} ° F`);
-                //     let imgSrc = `https://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png`;
-                //     $('.card-img-top').attr('src', imgSrc);
-                // }
-
                 renderCard($('#forecast-cards-container'), data.list[i]);
                 console.log(day, `Low: ${forecast.temp_min}`, `hight: ${forecast.temp_max}`); // Access and print every 8th element
             }
@@ -87,9 +85,7 @@ function getForecast(lat, lon, callback) {
 // ---------------------------------------------------------------------------------
 
 function renderCard(cardsContainer, forecastData) {
-    // 1. create elements
-    // 2. append data to elements
-    // 3. append elements to containers
+
     let forecastCard = $.parseHTML(`
         <div class="card col-12 col-md-2">
         <img class="card-img-top" src = "" alt = "Title" />
@@ -107,26 +103,23 @@ function renderCard(cardsContainer, forecastData) {
 
 // ---------------------------------------------------------------------------------
 
-function apiCalls(city, printedCityName) {
+function apiCalls(city) {
 
-    $('#current-city').text(printedCityName);
+
     getCoordingates(city, function () {
-    $('#results-container').slideDown();
+        $('#results-container').fadeIn("slow");
     });
 }
 
 // ---------------------------------------------------------------------------------
 
-citySelectFormEl.on('submit', function(event) {
+citySelectFormEl.on('submit', function () {
 
-    event.preventDefault();
-    let selectedOption = $('#city-input option:selected').val();
+    // event.preventDefault();
+    let selectedOption = $('#city-input').val();
     localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
 
-    let printedCityName = $('#city-input option:selected').text();
-    localStorage.setItem('printedCity', JSON.stringify(printedCityName));
-
-    apiCalls(selectedOption, printedCityName);
+    apiCalls(selectedOption);
 
 });
 
@@ -135,5 +128,5 @@ citySelectFormEl.on('submit', function(event) {
 $(document).ready(function () {
     let savedCity = JSON.parse(localStorage.getItem('selectedCity'));
     let printedCity = JSON.parse(localStorage.getItem('printedCity'));
-  apiCalls(savedCity, printedCity);
+    apiCalls(savedCity, printedCity);
 });
