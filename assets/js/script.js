@@ -1,6 +1,7 @@
 // Vars ----------------------------------------
-let cityInputEl = $('#city-input');
+let cityInputEl = $('#city-input'); 
 let citySelectFormEl = $('#city-select');
+let savedCityInputEl = $('');
 let lat;
 let lon;
 
@@ -103,8 +104,45 @@ function renderCard(cardsContainer, forecastData) {
 
 // ---------------------------------------------------------------------------------
 
-function apiCalls(city) {
 
+// ---------------------------------------------------------------------------------
+
+function updateSavedCities(cityName) {
+    if (cityName !== null && cityName !== undefined) {
+        let savedCities = JSON.parse(localStorage.getItem("savedCities"));
+        if (!Array.isArray(savedCities)) {
+            savedCities = [];
+        }
+        console.log(savedCities);
+
+        savedCities.push(cityName);
+        localStorage.setItem('savedCities', JSON.stringify(savedCities));
+
+        let addedBtn = $.parseHTML(`
+<button class = "btn btn-success p-3 my-3 savedBtn" id = "${cityName}Btn">${cityName}</button>`);
+        for (i = 0; i < savedCities.length; i++) {
+
+            $('#search-container').append(addedBtn);
+        }
+    }
+}
+
+function loadSavedCities() {
+    let savedCities = JSON.parse(localStorage.getItem("savedCities"));
+    if (!Array.isArray(savedCities)) {
+        savedCities = [];
+    }
+    for (i = 0; i < savedCities.length; i++) {
+        let addedBtn = $.parseHTML(`
+        <button class = "btn btn-success p-3 my-3 savedBtn" id = "${savedCities[i]}Btn">${savedCities[i]}</button>`);
+
+        $('#search-container').append(addedBtn);
+    }
+
+}
+// ---------------------------------------------------------------------------------
+
+function apiCalls(city) {
 
     getCoordingates(city, function () {
         $('#results-container').fadeIn("slow");
@@ -113,11 +151,12 @@ function apiCalls(city) {
 
 // ---------------------------------------------------------------------------------
 
-citySelectFormEl.on('submit', function () {
+citySelectFormEl.on('submit', function (event) {
 
-    // event.preventDefault();
+    event.preventDefault();
     let selectedOption = $('#city-input').val();
     localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
+    updateSavedCities(selectedOption);
 
     apiCalls(selectedOption);
 
@@ -125,8 +164,36 @@ citySelectFormEl.on('submit', function () {
 
 // -----------------------------------------------
 
+savedCityInputEl.on('submit', function() {
+
+    apiCalls(selectedOption);
+
+})
+
+// -----------------------------------------------
+
 $(document).ready(function () {
     let savedCity = JSON.parse(localStorage.getItem('selectedCity'));
     let printedCity = JSON.parse(localStorage.getItem('printedCity'));
     apiCalls(savedCity, printedCity);
+
+    loadSavedCities();
+
 });
+
+// --------------------------------------------------------------
+// $(document).ready(function() {
+//     $("#myButton").click(function() {
+//       const buttonId = $(this).attr("id");
+  
+//       function updateButtonIds() {
+//         let buttonIds = localStorage.getItem("buttonIds") ? JSON.parse(localStorage.getItem("buttonIds")) : [];
+  
+//         buttonIds.push(buttonId);
+  
+//         localStorage.setItem("buttonIds", JSON.stringify(buttonIds));
+//       }
+  
+//       updateButtonIds();
+//     });
+//   });
