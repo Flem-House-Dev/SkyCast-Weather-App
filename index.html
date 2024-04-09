@@ -46,7 +46,7 @@
     
                             <input
                                 type="text"
-                                class="form-control"
+                                class="form-control city-input"
                                 name="city-input"
                                 id="city-input"
                                 aria-describedby="helpId"
@@ -56,6 +56,12 @@
                             <button id="select-city" type="submit" class="btn btn-primary my-3">
                                 See Weather
                             </button>
+                            <div class=" ">
+                                <select class="city-input form-select form-select-lg" name="saved-cities" id="saved-cities">
+                                    <!-- <option selected>Search History</option> -->
+                                </select>
+                                <label for="saved-cities">Search History</label>
+                            </div>
                         </form>
                     </div>
 

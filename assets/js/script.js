@@ -1,7 +1,8 @@
 // Vars ----------------------------------------
 let cityInputEl = $('#city-input'); 
 let citySelectFormEl = $('#city-select');
-let savedCityInputEl = $('');
+let savedCityInputEl = $('#saved-cities');
+
 let lat;
 let lon;
 
@@ -114,36 +115,41 @@ function updateSavedCities(cityName) {
         if (!Array.isArray(savedCities)) {
             savedCities = [];
         }
-        
-        console.log("Saved Cities ....................................................")
-        console.log(savedCities);
 
         savedCities.push(cityName);
         localStorage.setItem('savedCities', JSON.stringify(savedCities));
-
-        let addedBtn = $.parseHTML(`
-            <button class = "btn btn-success p-3 my-3 savedCityBtn" id = "${cityName}Btn">${cityName}</button>`);
+       
+        $('#saved-cities').empty();
+        
         for (i = 0; i < savedCities.length; i++) {
 
-           
-            $('#search-container').append(addedBtn);
-            
+        let addSearchHist = $.parseHTML(`
+        <option value = "${savedCities[i]}">${savedCities[i]}</option>`)
+
+        
+        $('#saved-cities').append(addSearchHist);
         }
+   
+     
+        // loadSavedCities(cityName);
     }
 }
 
 // ---------------------------------------------------------------------------------
 
 function loadSavedCities() {
+    
     let savedCities = JSON.parse(localStorage.getItem("savedCities"));
     if (!Array.isArray(savedCities)) {
         savedCities = [];
     }
     for (i = 0; i < savedCities.length; i++) {
-        let addedBtn = $.parseHTML(`
-        <button class = "btn btn-success p-3 my-3 savedBtn" id = "${savedCities[i]}Btn">${savedCities[i]}</button>`);
 
-        $('#search-container').append(addedBtn);
+        let addSearchHist = $.parseHTML(`
+            <option value = "${savedCities[i]}">${savedCities[i]}</option>
+        `)
+       
+        $('#saved-cities').append(addSearchHist);
     }
 
 }
@@ -162,7 +168,7 @@ function apiCalls(city) {
 citySelectFormEl.on('submit', function (event) {
 
     event.preventDefault();
-    let selectedOption = $('#city-input').val();
+    let selectedOption = $('.city-input').val();
 
     if (selectedOption !== "") {
         localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
@@ -173,13 +179,28 @@ citySelectFormEl.on('submit', function (event) {
     }
 });
 
+
+
 // -----------------------------------------------
 
-savedCityInputEl.on('submit', function() {
+savedCityInputEl.on('input', function(event) {
 
-    apiCalls(selectedOption);
+    event.preventDefault();
+    let selectedOption = $('#saved-cities').val();
+
+    console.log("dropdown selected option ...........................");
+    console.log(selectedOption);
+
+        localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
+        // updateSavedCities(selectedOption);
+        console.log(" ...........................");
+        apiCalls(selectedOption);
+        $('#city-input').val("");
+    
 
 })
+
+
 
 // -----------------------------------------------
 
