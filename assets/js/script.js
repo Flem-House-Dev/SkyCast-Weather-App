@@ -110,22 +110,29 @@ function renderCard(cardsContainer, forecastData) {
 function updateSavedCities(cityName) {
     if (cityName !== null && cityName !== undefined) {
         let savedCities = JSON.parse(localStorage.getItem("savedCities"));
+
         if (!Array.isArray(savedCities)) {
             savedCities = [];
         }
+        
+        console.log("Saved Cities ....................................................")
         console.log(savedCities);
 
         savedCities.push(cityName);
         localStorage.setItem('savedCities', JSON.stringify(savedCities));
 
         let addedBtn = $.parseHTML(`
-<button class = "btn btn-success p-3 my-3 savedBtn" id = "${cityName}Btn">${cityName}</button>`);
+            <button class = "btn btn-success p-3 my-3 savedCityBtn" id = "${cityName}Btn">${cityName}</button>`);
         for (i = 0; i < savedCities.length; i++) {
 
+           
             $('#search-container').append(addedBtn);
+            
         }
     }
 }
+
+// ---------------------------------------------------------------------------------
 
 function loadSavedCities() {
     let savedCities = JSON.parse(localStorage.getItem("savedCities"));
@@ -140,6 +147,7 @@ function loadSavedCities() {
     }
 
 }
+
 // ---------------------------------------------------------------------------------
 
 function apiCalls(city) {
@@ -155,11 +163,14 @@ citySelectFormEl.on('submit', function (event) {
 
     event.preventDefault();
     let selectedOption = $('#city-input').val();
-    localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
-    updateSavedCities(selectedOption);
 
-    apiCalls(selectedOption);
+    if (selectedOption !== "") {
+        localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
+        updateSavedCities(selectedOption);
 
+        apiCalls(selectedOption);
+        $('#city-input').val("");
+    }
 });
 
 // -----------------------------------------------
@@ -182,18 +193,3 @@ $(document).ready(function () {
 });
 
 // --------------------------------------------------------------
-// $(document).ready(function() {
-//     $("#myButton").click(function() {
-//       const buttonId = $(this).attr("id");
-  
-//       function updateButtonIds() {
-//         let buttonIds = localStorage.getItem("buttonIds") ? JSON.parse(localStorage.getItem("buttonIds")) : [];
-  
-//         buttonIds.push(buttonId);
-  
-//         localStorage.setItem("buttonIds", JSON.stringify(buttonIds));
-//       }
-  
-//       updateButtonIds();
-//     });
-//   });
