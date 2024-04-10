@@ -105,33 +105,49 @@ function renderCard(cardsContainer, forecastData) {
 
 // ---------------------------------------------------------------------------------
 
+// let loadSavedCities = function() { 
+//     let savedCitites = JSON.parse(localStorage.getItem("savedCities"));
+
+//         if (!Array.isArray(savedCities)) {
+//             savedCities = [];
+//         }
+//         return savedCities;
+//  }
 
 // ---------------------------------------------------------------------------------
 
 function updateSavedCities(cityName) {
-    if (cityName !== null && cityName !== undefined) {
+   
         let savedCities = JSON.parse(localStorage.getItem("savedCities"));
 
         if (!Array.isArray(savedCities)) {
             savedCities = [];
         }
 
-        savedCities.push(cityName);
+        // loadSavedCities();
+
+        if (!savedCities.includes(cityName)) {
+            savedCities.push(cityName);
+          }
+
         localStorage.setItem('savedCities', JSON.stringify(savedCities));
        
-        $('#saved-cities').empty();
-        
-        for (i = 0; i < savedCities.length; i++) {
+        addSearchHistFunc(savedCities);
+     
+}
+
+// ---------------------------------------------------------------------------------
+
+function addSearchHistFunc(savedCitiesObj) {
+
+    $('#saved-cities').empty();
+    for (i = 0; i < savedCitiesObj.length; i++) {
 
         let addSearchHist = $.parseHTML(`
-        <option value = "${savedCities[i]}">${savedCities[i]}</option>`)
-
-        
+            <option value = "${savedCitiesObj[i]}">${savedCitiesObj[i]}</option>
+        `)
+       
         $('#saved-cities').append(addSearchHist);
-        }
-   
-     
-        // loadSavedCities(cityName);
     }
 }
 
@@ -143,14 +159,9 @@ function loadSavedCities() {
     if (!Array.isArray(savedCities)) {
         savedCities = [];
     }
-    for (i = 0; i < savedCities.length; i++) {
 
-        let addSearchHist = $.parseHTML(`
-            <option value = "${savedCities[i]}">${savedCities[i]}</option>
-        `)
-       
-        $('#saved-cities').append(addSearchHist);
-    }
+    // savedCities();
+    addSearchHistFunc(savedCities);
 
 }
 
@@ -192,12 +203,10 @@ savedCityInputEl.on('input', function(event) {
     console.log(selectedOption);
 
         localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
-        // updateSavedCities(selectedOption);
         console.log(" ...........................");
         apiCalls(selectedOption);
         $('#city-input').val("");
     
-
 })
 
 
