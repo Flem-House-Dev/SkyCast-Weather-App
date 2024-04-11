@@ -26,16 +26,14 @@ function getCoordingates(city, callback) {
 
     const requestUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},us&limit=5&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
 
-    // console.log(city)
-
     fetch(requestUrl)
         .then(function (response) {
             return response.json();
         })
 
         .then(function (data) {
-            // console.log('Get coordingates .....................................');
-            // console.log(data);
+            console.log('Get coordingates .....................................');
+            console.log(data);
             // city = data[0].local_names.en;
             lat = data[0].lat;
             lon = data[0].lon;
@@ -158,6 +156,9 @@ function updateSavedCities(cityName) {
             savedCities.push(cityName);
           }
 
+          savedCities.sort();
+          console.log("Sort Saved Cities ..........................");
+          console.log(savedCities);
         localStorage.setItem('savedCities', JSON.stringify(savedCities));
        
         addSearchHistFunc(savedCities);
@@ -187,9 +188,12 @@ function addSearchHistFunc(savedCitiesObj) {
 function loadSavedCities() {
     
     let savedCities = JSON.parse(localStorage.getItem("savedCities"));
+   
     if (!Array.isArray(savedCities)) {
         savedCities = [];
     }
+
+   
 
     // savedCities();
     addSearchHistFunc(savedCities);
@@ -199,7 +203,7 @@ function loadSavedCities() {
 // ---------------------------------------------------------------------------------
 
 function apiCalls(city) {
-
+  
     getCoordingates(city, function () {
         $('#results-container').fadeIn("slow");
     });
@@ -247,8 +251,8 @@ savedCityInputEl.on('input', function(event) {
 // -----------------------------------------------
 
 $(document).ready(function () {
-    let savedCity = JSON.parse(localStorage.getItem('selectedCity'));
-    let printedCity = JSON.parse(localStorage.getItem('printedCity'));
+    let savedCity = JSON.parse(localStorage.getItem('Saved-To-Storage'));
+    let printedCity = JSON.parse(localStorage.getItem('Saved-To-Storage'));
     apiCalls(savedCity, printedCity);
 
     loadSavedCities();
