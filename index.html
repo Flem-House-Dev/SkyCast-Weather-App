@@ -25,59 +25,68 @@
     </header>
     <main>
         <div class="container-fluid p-4">
-            <div class="row align-items-center g-2">
+            <div class="row  g-2">
 
-<!-- ------------ Dropdown Select ------------------------------------ -->
+                <!-- ------------ Dropdown Select ------------------------------------ -->
 
-                <div class="col-12 col-md-4 border">
+                <div id="search-container" class="col-12 col-md-4 border align-items-start ">
                     <h2>Select a City:</h2>
                     <div class="m-3">
                         <form id="city-select">
                             <label for="city-input" class="form-label"></label>
-                            <select class="form-select form-select-lg" name="city-input" id="city-input">
-                                <option selected>Select City</option>
-                                <option value="murfreesboro,tn">Murfreesboro, TN</option>
-                                <option value="los_angeles,ca">Los Angeles, CA</option>
-                                <option value="new_york,ny">New York, NY</option>
-                                <option value="miami,fl">Miami, FL</option>
-                                <option value="anchorage,ak">Anchorage, AK</option>
-                            </select>
+    
+                            <input
+                                type="text"
+                                class="form-control city-input"
+                                name="city-input"
+                                id="city-input"
+                                aria-describedby="helpId"
+                                placeholder="🔎Search"
+                            />
+                            
                             <button id="select-city" type="submit" class="btn btn-primary my-3">
                                 See Weather
                             </button>
+                            <div class=" ">
+                                <select class="city-input form-select form-select-lg" name="saved-cities" id="saved-cities">
+                                    <!-- <option selected>Search History</option> -->
+                                </select>
+                                
+                            </div>
                         </form>
                     </div>
 
-<!-- ------------------- Current Weather ----------------------------- -->
+                    <!-- ------------------- Current Weather ---------------------------------- -->
 
                 </div>
-                <div id="results-container" class="container col-12 col-md-8 border" style="display: none;">
+                <div id="results-container" class="container col-12 col-md-8 border align-items-center" style="display: none;">
                     <div class="row ">
                         <div id="current-weather" class="col-12">
                             <h2 id="current-city">You are in:</h2>
                             <h3 id="current-temp">Current temp:</h3>
                         </div>
 
-<!-- ------------------ Forecast ------------------------------------- -->
+                        <!-- ------------------ Forecast ------------------------------------- -->
 
                         <div class="col-12">
                             <h3>Forecast:</h3>
-                            <div id="forecast-cards-container" class="row flex-column flex-md-row justify-content-evenly" >
+                            <div id="forecast-cards-container"
+                                class="row flex-column flex-md-row justify-content-evenly">
 
-                            <!-- ----------- Card -------------- -->
-                            <!-- <div class="card col-2">
+                                <!-- ----------- Card -------------- -->
+                                <!-- <div class="card col-2">
                                 <img class="card-img-top" src="" alt="Title" />
                                 <div class="card-body">
                                     <h4 class="card-title">Title</h4>
                                     <p class="card-text">Text</p>
                                 </div>
                             </div> -->
-                             <!-- ------------------------- -->
+                                <!-- ------------------------- -->
 
                             </div>
                         </div>
                     </div>
-<!-- ----------------------------------------------------------------- -->
+                    <!-- ----------------------------------------------------------------- -->
                 </div>
             </div>
         </div>
