@@ -235,6 +235,7 @@ function apiCalls(city) {
         $('#results-container').fadeIn("slow");
         // $('#current-weather').fadeIn("fast");
     });
+    
 }
 
 // ---------------------------------------------------------------------------------
@@ -246,10 +247,12 @@ citySelectFormEl.on('submit', function (event) {
     let selectedOption = $('.city-input').val();
 
     if (selectedOption !== "") {
-
+        localStorage.setItem('Saved-To-Storage', JSON.stringify(selectedOption));
+      
         apiCalls(selectedOption);
         $('#city-input').val("");
     }
+    location.reload();
 });
 
 // -----------------------------------------------
@@ -261,7 +264,7 @@ savedCityInputEl.on('input', function(event) {
     console.log("dropdown selected option ...........................");
     console.log(selectedOption);
     console.log(event);
-        localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
+        localStorage.setItem('Saved-To-Storage', JSON.stringify(selectedOption));
         // console.log(" ...........................");
         apiCalls(selectedOption);
         $('#city-input').val("");  
