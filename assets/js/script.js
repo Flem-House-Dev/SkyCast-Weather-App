@@ -111,12 +111,24 @@ function getForecast(lat, lon, callback) {
             console.log(data);
             $('#forecast-cards-container').empty();
 
-            for (let i = 3; i < data.list.length; i += 8) {
+            let currentTime = dayjs().format('h');
+            console.log(currentTime);
+            if (currentTime <= 8) {
+                logLoop(3)
+            } else if (currentTime > 8 && currentTime <=16) {
+                logLoop(6)
+            } else {
+                logLoop(9)
+            }
+
+            function logLoop(loopI) {  
+            for (let i = loopI; i < data.list.length; i += 8) {
                         let forecast = data.list[i].main
                         let day = `Day ${i / 8 + 1}:`;  
                 console.log(data.list[i].dt_txt);
                         renderCard($('#forecast-cards-container'), data.list[i]);
                     }
+                }
             
             if (typeof callback == 'function') {
                 callback();
