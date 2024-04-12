@@ -37,7 +37,7 @@ function clearSearch() {
 
 function getCoordingates(city, callback) {
 
-    const requestUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},us&limit=5&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
+    const requestUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city},us&limit=5&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
 
     fetch(requestUrl)
         .then(function (response) {
