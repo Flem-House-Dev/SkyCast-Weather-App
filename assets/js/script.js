@@ -74,8 +74,9 @@ function getCurrentWeather(lat, lon) {
             `)
 
             let currentTemp = parseInt(data.main.temp);
+            let today = dayjs();
 
-            
+            $('#current-date').text(today.format('ddd, MMM D, YYYY'))
             $('#current-temp').text(`Current temp: ${currentTemp}° F`);
             $('#current-icon').empty();
             $('#current-icon').append(imgSrc);
@@ -98,13 +99,14 @@ function getForecast(lat, lon, callback) {
             console.log('Get forecast .....................................');
             console.log(data);
             $('#forecast-cards-container').empty();
+
             for (let i = 3; i < data.list.length; i += 8) {
-                let forecast = data.list[i].main
-                let day = `Day ${i / 8 + 1}:`;
-
-                renderCard($('#forecast-cards-container'), data.list[i]);
-            }
-
+                        let forecast = data.list[i].main
+                        let day = `Day ${i / 8 + 1}:`;  
+                console.log(data.list[i].dt_txt);
+                        renderCard($('#forecast-cards-container'), data.list[i]);
+                    }
+            
             if (typeof callback == 'function') {
                 callback();
             }
@@ -116,16 +118,34 @@ function getForecast(lat, lon, callback) {
 function renderCard(cardsContainer, forecastData) {
 
     let forecastCard = $.parseHTML(`
-        <div class="card col-12 col-md-2 shadow ">
-        <img class="card-img-top" src = "" alt = "Title" />
+        <div class="card col-12 col-md-2 shadow d-flex my-4 ">
+        
         <div class="card-body">
-            <h4 class="card-title">Title</h4>
-            <p class="card-text">Text</p>
+            <h3 class="card-title">Title</h4>
+            <img class="card-img-top  w-50" data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "Current conditions" />
+            <p id="forecast-temp" class=" card-text">Text</p>
+            <p id="forecast-wind" class="card-text">Text</p>
+            <p id="forecast-humidity" class="card-text">Text</p>
         </div>
         </div>`);
 
+    // console.log("Get forecast temp ............................");
+    // console.log(forecastData.dt);
+
+    let forecastDate = dayjs.unix(forecastData.dt).format('MMM D, YYYY');
+    let forecastTemp = parseInt(forecastData.main.temp);
+    let forecastWind = parseInt(forecastData.wind.speed);
+    let forecastHumidity = forecastData.main.humidity;
+    // console.log(forecastTemp);
+    
     let imgSrc = `https://openweathermap.org/img/w/${forecastData.weather[0].icon}.png`;
+
     $(forecastCard).find(".card-img-top").attr("src", imgSrc);
+    $(forecastCard).find(".card-title").text(forecastDate);
+    $(forecastCard).find('#forecast-temp').text(`Temp: ${forecastTemp}° F`);
+    $(forecastCard).find('#forecast-wind').text(`Wind speed: ${forecastWind} mph`);
+    $(forecastCard).find('#forecast-humidity').text(`Humidity: ${forecastHumidity}%`);
+
 
 
     
