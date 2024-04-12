@@ -26,39 +26,26 @@ function getCoordingates(city, callback) {
 
     const requestUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city},us&limit=5&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
 
-    // console.log(city)
-
     fetch(requestUrl)
         .then(function (response) {
             return response.json();
         })
 
         .then(function (data) {
-            // console.log('Get coordingates .....................................');
-            // console.log(data);
-            // city = data[0].local_names.en;
+            console.log('Get coordingates .....................................');
+            console.log(data);
+        
             lat = data[0].lat;
             lon = data[0].lon;
-            // console.log(city);
-            // console.log(lat);
-            // console.log(lon);
-
-            // let printedCityName = data[0].name;
-            // let printedStateName = data[0].state;
 
             let cityAndStateName = `${data[0].name}, ${data[0].state}`
             saveToLocalStorage(cityAndStateName);
-           
-            // localStorage.setItem('printedCity', JSON.stringify(printedCityName));
-            // $('#current-city').text(`${printedCityName}, ${printedStateName} `);
-
-            // localStorage.setItem('printedCity', JSON.stringify(cityAndStateName));
+         
             $('#current-city').text(`${cityAndStateName}`);
 
             getCurrentWeather(lat, lon);
             getForecast(lat, lon, callback)
 
-            // localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
             saveToLocalStorage(cityAndStateName)
             updateSavedCities(cityAndStateName);
         })
@@ -75,12 +62,26 @@ function getCurrentWeather(lat, lon) {
         })
 
         .then(function (data) {
-            // console.log('Get current weather .....................................');
-            // console.log(data);
+            console.log('Get current weather .....................................');
+            console.log(data);
+
+            
+         
+            let imgSrc = $.parseHTML(`
+            <div class = "card shadow">
+            <img src = "https://openweathermap.org/img/w/${data.weather[0].icon}.png" alt = "" data-toggle = "tooltip" title = "${data.weather[0].main}"/>
+            </div>
+            `)
 
             let currentTemp = parseInt(data.main.temp);
-            $('#current-temp').text(`Current temp: ${currentTemp}° F`);
+            let today = dayjs();
 
+            $('#current-date').text(today.format('ddd, MMM D, YYYY'))
+            $('#current-temp').text(`Current temp: ${currentTemp}° F`);
+            $('#current-icon').empty();
+            $('#current-icon').append(imgSrc);
+            $('#current-wind-speed').text(`Wind: ${data.wind.speed} mph`);
+            $('#current-humidity').text(`Humidity: ${data.main.humidity} %`);
         });
 };
 
@@ -95,17 +96,17 @@ function getForecast(lat, lon, callback) {
         })
 
         .then(function (data) {
-            // console.log('Get forecast .....................................');
-            // console.log(data);
+            console.log('Get forecast .....................................');
+            console.log(data);
             $('#forecast-cards-container').empty();
-            for (let i = 0; i < data.list.length; i += 8) {
-                let forecast = data.list[i].main
-                let day = `Day ${i / 8 + 1}:`;
 
-                renderCard($('#forecast-cards-container'), data.list[i]);
-                // console.log(day, `Low: ${forecast.temp_min}`, `hight: ${forecast.temp_max}`); // Access and print every 8th element
-            }
-
+            for (let i = 3; i < data.list.length; i += 8) {
+                        let forecast = data.list[i].main
+                        let day = `Day ${i / 8 + 1}:`;  
+                console.log(data.list[i].dt_txt);
+                        renderCard($('#forecast-cards-container'), data.list[i]);
+                    }
+            
             if (typeof callback == 'function') {
                 callback();
             }
@@ -117,30 +118,41 @@ function getForecast(lat, lon, callback) {
 function renderCard(cardsContainer, forecastData) {
 
     let forecastCard = $.parseHTML(`
-        <div class="card col-12 col-md-2">
-        <img class="card-img-top" src = "" alt = "Title" />
+        <div class="card col-12 col-md-2 shadow d-flex my-4 ">
+        
         <div class="card-body">
-            <h4 class="card-title">Title</h4>
-            <p class="card-text">Text</p>
+            <h3 class="card-title">Title</h4>
+            <img class="card-img-top  w-50" data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "Current conditions" />
+            <p id="forecast-temp" class=" card-text">Text</p>
+            <p id="forecast-wind" class="card-text">Text</p>
+            <p id="forecast-humidity" class="card-text">Text</p>
         </div>
         </div>`);
 
-    let imgSrc = `https://openweathermap.org/img/w/${forecastData.weather[0].icon}.png`;
-    $(forecastCard).find(".card-img-top").attr("src", imgSrc);
+    // console.log("Get forecast temp ............................");
+    // console.log(forecastData.dt);
 
+    let forecastDate = dayjs.unix(forecastData.dt).format('MMM D, YYYY');
+    let forecastTemp = parseInt(forecastData.main.temp);
+    let forecastWind = parseInt(forecastData.wind.speed);
+    let forecastHumidity = forecastData.main.humidity;
+    // console.log(forecastTemp);
+    
+    let imgSrc = `https://openweathermap.org/img/w/${forecastData.weather[0].icon}.png`;
+
+    $(forecastCard).find(".card-img-top").attr("src", imgSrc);
+    $(forecastCard).find(".card-title").text(forecastDate);
+    $(forecastCard).find('#forecast-temp').text(`Temp: ${forecastTemp}° F`);
+    $(forecastCard).find('#forecast-wind').text(`Wind speed: ${forecastWind} mph`);
+    $(forecastCard).find('#forecast-humidity').text(`Humidity: ${forecastHumidity}%`);
+
+
+
+    
     $(cardsContainer).append(forecastCard);
 }
 
 // ---------------------------------------------------------------------------------
-
-// let loadSavedCities = function() { 
-//     let savedCitites = JSON.parse(localStorage.getItem("savedCities"));
-
-//         if (!Array.isArray(savedCities)) {
-//             savedCities = [];
-//         }
-//         return savedCities;
-//  }
 
 // ---------------------------------------------------------------------------------
 
@@ -152,16 +164,16 @@ function updateSavedCities(cityName) {
             savedCities = [];
         }
 
-        // loadSavedCities();
-
         if (!savedCities.includes(cityName)) {
             savedCities.push(cityName);
           }
 
+          savedCities.sort();
+        //   console.log("Sort Saved Cities ..........................");
+        //   console.log(savedCities);
         localStorage.setItem('savedCities', JSON.stringify(savedCities));
        
-        addSearchHistFunc(savedCities);
-     
+        addSearchHistFunc(savedCities);   
 }
 
 // ---------------------------------------------------------------------------------
@@ -170,7 +182,7 @@ function addSearchHistFunc(savedCitiesObj) {
 
     $('#saved-cities').empty();
   
-    $('#saved-cities').append($.parseHTML(`<option value = Search-History>Search History</option>`));
+    $('#saved-cities').append($.parseHTML(`<option value = "Search-History">Search History</option>`));
 
     for (i = 0; i < savedCitiesObj.length; i++) {
 
@@ -187,21 +199,21 @@ function addSearchHistFunc(savedCitiesObj) {
 function loadSavedCities() {
     
     let savedCities = JSON.parse(localStorage.getItem("savedCities"));
+   
     if (!Array.isArray(savedCities)) {
         savedCities = [];
     }
 
-    // savedCities();
     addSearchHistFunc(savedCities);
-
 }
 
 // ---------------------------------------------------------------------------------
 
 function apiCalls(city) {
-
+  
     getCoordingates(city, function () {
         $('#results-container').fadeIn("slow");
+        // $('#current-weather').fadeIn("fast");
     });
 }
 
@@ -211,20 +223,14 @@ citySelectFormEl.on('submit', function (event) {
 
     event.preventDefault();
     
-
     let selectedOption = $('.city-input').val();
 
     if (selectedOption !== "") {
-        // --------------
-        // localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
-        // updateSavedCities(selectedOption);
-        // --------------
+
         apiCalls(selectedOption);
         $('#city-input').val("");
     }
 });
-
-
 
 // -----------------------------------------------
 
@@ -238,21 +244,18 @@ savedCityInputEl.on('input', function(event) {
         localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
         // console.log(" ...........................");
         apiCalls(selectedOption);
-        $('#city-input').val("");
-    
+        $('#city-input').val("");    
 })
-
-
 
 // -----------------------------------------------
 
 $(document).ready(function () {
-    let savedCity = JSON.parse(localStorage.getItem('selectedCity'));
-    let printedCity = JSON.parse(localStorage.getItem('printedCity'));
+    let savedCity = JSON.parse(localStorage.getItem('Saved-To-Storage'));
+    let printedCity = JSON.parse(localStorage.getItem('Saved-To-Storage'));
     apiCalls(savedCity, printedCity);
+    $('[data-toggle="tooltip"]').tooltip();
 
     loadSavedCities();
-
 });
 
 // --------------------------------------------------------------

@@ -5,3 +5,20 @@
 /* * {
     outline: var(--test-outline);
 } */
+
+body {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+body h2 {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+body h3 {
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: underline;
+
+}

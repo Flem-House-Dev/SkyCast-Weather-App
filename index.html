@@ -10,6 +10,11 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <script
+    src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
+    integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U="
+    crossorigin="anonymous"
+  ></script>
 
     <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
@@ -25,11 +30,11 @@
     </header>
     <main>
         <div class="container-fluid p-4">
-            <div class="row  g-2">
+            <div class="row">
 
-                <!-- ------------ Dropdown Select ------------------------------------ -->
+                <!-- ------------ Dropdown Select ------------------------------------
 
-                <div id="search-container" class="col-12 col-md-4 border align-items-start ">
+                <div id="search-container" class="col-12 col-md-4 border align-items-start order-md-0  ">
                     <h2>Select a City:</h2>
                     <div class="m-3">
                         <form id="city-select">
@@ -49,21 +54,26 @@
                             </button>
                             <div class=" ">
                                 <select class="city-input form-select form-select-lg" name="saved-cities" id="saved-cities">
-                                    <!-- <option selected>Search History</option> -->
                                 </select>
                                 
                             </div>
                         </form>
                     </div>
+                </div> -->
 
                     <!-- ------------------- Current Weather ---------------------------------- -->
-
-                </div>
-                <div id="results-container" class="container col-12 col-md-8 border align-items-center" style="display: none;">
+               
+                <div id="results-container" class="container col-12 col-md-8 align-items-center order-md-1 " style="display: none;">
                     <div class="row ">
-                        <div id="current-weather" class="col-12">
-                            <h2 id="current-city">You are in:</h2>
-                            <h3 id="current-temp">Current temp:</h3>
+                        <div id="current-weather" class="col-12 border-bottom border-3 p-4 mb-4  d-flex justify-content-start ">
+                           <div id="current-data" class="mx-3 ">
+                                <h2 id="current-city" class="border-bottom border-4 pb-2 "></h2> 
+                                <p id="current-date" class="border-bottom border-4 pb-2"></p>
+                                <p id="current-temp"></p>
+                                <p id="current-wind-speed"></p>
+                                <p id="current-humidity"></p>
+                            </div>
+                            <div id="current-icon" class="h"></div>
                         </div>
 
                         <!-- ------------------ Forecast ------------------------------------- -->
@@ -73,21 +83,42 @@
                             <div id="forecast-cards-container"
                                 class="row flex-column flex-md-row justify-content-evenly">
 
-                                <!-- ----------- Card -------------- -->
-                                <!-- <div class="card col-2">
-                                <img class="card-img-top" src="" alt="Title" />
-                                <div class="card-body">
-                                    <h4 class="card-title">Title</h4>
-                                    <p class="card-text">Text</p>
-                                </div>
-                            </div> -->
-                                <!-- ------------------------- -->
-
                             </div>
                         </div>
                     </div>
-                    <!-- ----------------------------------------------------------------- -->
                 </div>
+
+                    <!-- ------------ Dropdown Select ------------------------------------ -->
+                
+                <div id="search-container" class="col-12 col-md-4 border align-items-start order-md-0  ">
+                    <h2>Select a City:</h2>
+                    <div class="m-3">
+                        <form id="city-select">
+                            <label for="city-input" class="form-label"></label>
+    
+                            <input
+                                type="text"
+                                class="form-control city-input"
+                                name="city-input"
+                                id="city-input"
+                                aria-describedby="helpId"
+                                placeholder="🔎Search"
+                            />
+                            
+                            <button id="select-city" type="submit" class="btn btn-primary my-3">
+                                See Weather
+                            </button>
+                            <div class=" ">
+                                <select class="city-input form-select form-select-lg" name="saved-cities" id="saved-cities">
+                                </select>
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div> 
+
+                  <!-- ----------------------------------------------------------------- -->
+
             </div>
         </div>
     </main>
@@ -98,8 +129,9 @@
         crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
-        integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js" -->
+        <!-- integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script> -->
+    
     <script src="./assets/js/script.js"></script>
 </body>
 
