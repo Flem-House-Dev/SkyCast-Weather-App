@@ -2,6 +2,7 @@
 let cityInputEl = $('#city-input'); 
 let citySelectFormEl = $('#city-select');
 let savedCityInputEl = $('#saved-cities');
+let clearSavedListBtnEl = $('#clear-local-storage');
 
 let lat;
 let lon;
@@ -20,6 +21,18 @@ function saveToLocalStorage(saveOurCity) {
 //     return loadedCity
 //  }
 
+// ------------------------------------------------------------------
+function clearSearch() {
+
+    let localSaved = function(){JSON.parse(localStorage.getItem("savedCities"));
+        if (!Array.isArray(loadedCity)) {
+            loadedCity = [];
+        }};
+
+    localSaved = [];
+
+    saveToLocalStorage(localSaved);
+}
 // ------------------------------------------------------------------
 
 function getCoordingates(city, callback) {
@@ -63,9 +76,7 @@ function getCurrentWeather(lat, lon) {
 
         .then(function (data) {
             console.log('Get current weather .....................................');
-            console.log(data);
-
-            
+            console.log(data); 
          
             let imgSrc = $.parseHTML(`
             <div class = "card shadow">
@@ -118,11 +129,11 @@ function getForecast(lat, lon, callback) {
 function renderCard(cardsContainer, forecastData) {
 
     let forecastCard = $.parseHTML(`
-        <div class="card col-12 col-md-2 shadow d-flex my-4 ">
+        <div class="card col-12 col-xl-2 shadow d-flex my-4 ">
         
         <div class="card-body">
             <h3 class="card-title">Title</h4>
-            <img class="card-img-top  w-50" data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "Current conditions" />
+            <img class="card-img-top border-bottom border-2 mb-2  " data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "Current conditions" />
             <p id="forecast-temp" class=" card-text">Text</p>
             <p id="forecast-wind" class="card-text">Text</p>
             <p id="forecast-humidity" class="card-text">Text</p>
@@ -145,9 +156,6 @@ function renderCard(cardsContainer, forecastData) {
     $(forecastCard).find('#forecast-temp').text(`Temp: ${forecastTemp}° F`);
     $(forecastCard).find('#forecast-wind').text(`Wind speed: ${forecastWind} mph`);
     $(forecastCard).find('#forecast-humidity').text(`Humidity: ${forecastHumidity}%`);
-
-
-
     
     $(cardsContainer).append(forecastCard);
 }
@@ -244,8 +252,42 @@ savedCityInputEl.on('input', function(event) {
         localStorage.setItem('selectedCity', JSON.stringify(selectedOption));
         // console.log(" ...........................");
         apiCalls(selectedOption);
-        $('#city-input').val("");    
+        $('#city-input').val("");  
+        location.reload();  
 })
+
+// -----------------------------------------------
+clearSavedListBtnEl.on("click", function () {
+    
+    let localSaved = function () {
+        JSON.parse(localStorage.getItem("savedCities"));
+        if (!Array.isArray(loadedCity)) {
+            loadedCity = [];
+        }
+    };
+
+    let localPrinted = function () {
+        JSON.parse(localStorage.getItem("Saved-To-Storage"));
+        if (!Array.isArray(loadedCity)) {
+            loadedCity = [];
+        }
+    };
+
+    localPrinted = [];
+    localSaved = [];
+
+    console.log(localPrinted);
+    console.log(localSaved);
+
+    localStorage.setItem('savedCities', JSON.stringify(localSaved));
+    localStorage.setItem('Saved-To-Storage', JSON.stringify(localPrinted));
+
+     console.log(localPrinted);
+    console.log(localSaved);
+    
+    location.reload();
+})
+
 
 // -----------------------------------------------
 

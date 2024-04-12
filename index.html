@@ -63,7 +63,7 @@
 
                     <!-- ------------------- Current Weather ---------------------------------- -->
                
-                <div id="results-container" class="container col-12 col-md-8 align-items-center order-md-1 " style="display: none;">
+                <div id="results-container" class="container col-12 col-md-8 align-items-center order-lg-1 " style="display: none;">
                     <div class="row ">
                         <div id="current-weather" class="col-12 border-bottom border-3 p-4 mb-4  d-flex justify-content-start ">
                            <div id="current-data" class="mx-3 ">
@@ -81,7 +81,7 @@
                         <div class="col-12">
                             <h3>Forecast:</h3>
                             <div id="forecast-cards-container"
-                                class="row flex-column flex-md-row justify-content-evenly">
+                                class="row flex-column flex-lg-row   justify-content-evenly">
 
                             </div>
                         </div>
@@ -90,7 +90,7 @@
 
                     <!-- ------------ Dropdown Select ------------------------------------ -->
                 
-                <div id="search-container" class="col-12 col-md-4 border align-items-start order-md-0  ">
+                <div id="search-container" class="col-12 col-lg-3 border align-items-start order-lg-0  ">
                     <h2>Select a City:</h2>
                     <div class="m-3">
                         <form id="city-select">
@@ -110,11 +110,19 @@
                             </button>
                             <div class=" ">
                                 <select class="city-input form-select form-select-lg" name="saved-cities" id="saved-cities">
-                                </select>
-                                
+                                </select>   
                             </div>
                         </form>
+                        <button
+                        type="button"
+                        class="btn btn-danger mt-3  "
+                        id="clear-local-storage">
+                        Clear Saved List
+                    </button>
                     </div>
+
+                
+                    
                 </div> 
 
                   <!-- ----------------------------------------------------------------- -->
