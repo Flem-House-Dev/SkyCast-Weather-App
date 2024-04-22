@@ -88,8 +88,8 @@ function getCurrentWeather(lat, lon) {
             $('#current-date').text(dayjs().format('ddd, MMM D, YYYY'))
             $('#current-conditions').text(`${data.weather[0].description}`)
             $('#current-temp').text(`Current temp: ${parseInt(data.main.temp)}° F`);
-            $('#hi-current-temp').text(`Hi: ${parseInt(data.main.temp_max)}° F`);
-            $('#lo-current-temp').text(`Lo: ${parseInt(data.main.temp_min)}° F`)
+            $('#hi-current-temp').text(`High: ${parseInt(data.main.temp_max)}° F`);
+            $('#lo-current-temp').text(`Low: ${parseInt(data.main.temp_min)}° F`)
             $('#current-icon').empty();
             $('#current-icon').append(imgSrc);
             $('#current-wind-speed').text(`Wind: ${data.wind.speed} mph`);
@@ -176,8 +176,8 @@ function renderCard(cardsContainer, forecastData) {
     $(forecastCard).find('#forecast-conditions').text(forecastConditions);
     $(forecastCard).find('#forecast-description').text(forecastDescription);
     $(forecastCard).find('#forecast-temp').text(`${forecastTemp}° F`);
-    $(forecastCard).find('#forecast-hi-temp').text(`Hi: ${forecastHiTemp}° F`);
-    $(forecastCard).find('#forecast-lo-temp').text(`Lo: ${forecastLoTemp}° F`);
+    $(forecastCard).find('#forecast-hi-temp').text(`High: ${forecastHiTemp}° F`);
+    $(forecastCard).find('#forecast-lo-temp').text(`Low: ${forecastLoTemp}° F`);
     $(forecastCard).find('#forecast-wind').text(`${forecastWind} mph`);
     $(forecastCard).find('#forecast-humidity').text(`${forecastHumidity}%`);
     
