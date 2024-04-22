@@ -84,13 +84,8 @@ function getCurrentWeather(lat, lon) {
             </div>
             `)
 
-            let currentTemp = parseInt(data.main.temp);
-            
-            // let hiTemp = parseInt(data.main.temp_max);
-            let today = dayjs();
-
-            $('#current-date').text(today.format('ddd, MMM D, YYYY'))
-            $('#current-temp').text(`Current temp: ${currentTemp}° F`);
+            $('#current-date').text(dayjs().format('ddd, MMM D, YYYY'))
+            $('#current-temp').text(`Current temp: ${parseInt(data.main.temp)}° F`);
             $('#hi-current-temp').text(`Hi: ${parseInt(data.main.temp_max)}° F`);
             $('#lo-current-temp').text(`Lo: ${parseInt(data.main.temp_min)}° F`)
             $('#current-icon').empty();
@@ -115,28 +110,12 @@ function getForecast(lat, lon, callback) {
             console.log(data);
             $('#forecast-cards-container').empty();
 
-            // let currentTime = dayjs().format('H');
-            // let currentTime = 8;
-           
-            // if (currentTime <= 8) {
-            //     logLoop(6)
-            // } else if (currentTime > 8 && currentTime <=16) {
-            //     logLoop(6)
-            // } else {
-            //     logLoop(6)
-            // }
-
-
         //    console.log(currentTime);
 
-            // function logLoop(loopI) {  
             for (let i = 7; i < data.list.length; i += 8) {
-                        // let forecast = data.list[i].main
-                        // let day = `Day ${i / 8 + 1}:`;  
                 console.log(data.list[i].dt_txt);
                         renderCard($('#forecast-cards-container'), data.list[i]);
                     }
-                // }
             
             if (typeof callback == 'function') {
                 callback();
@@ -153,7 +132,7 @@ function renderCard(cardsContainer, forecastData) {
         
         <div class="card-body">
             <h3 class="card-title">Title</h4>
-            <img class="card-img-top border-bottom border-2 mb-2  " data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "Current conditions" />
+            <img class="card-img-top w-50  border-bottom border-2 mb-2 data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "forecast conditions" />
             <p  class=" card-text">
             Temp: </br>
     
@@ -174,7 +153,7 @@ function renderCard(cardsContainer, forecastData) {
     // console.log("Get forecast temp ............................");
     // console.log(forecastData.dt);
 
-    let forecastDate = dayjs.unix(forecastData.dt).format('MMM D, YYYY');
+    let forecastDate = dayjs.unix(forecastData.dt).format('ddd, MMM D, YYYY');
     let forecastTemp = parseInt(forecastData.main.temp);
     let forecastHiTemp = parseInt(forecastData.main.temp_max);
     let forecastLoTemp = parseInt(forecastData.main.temp_min);
@@ -194,8 +173,6 @@ function renderCard(cardsContainer, forecastData) {
     
     $(cardsContainer).append(forecastCard);
 }
-
-// ---------------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------------
 
@@ -325,7 +302,6 @@ clearSavedListBtnEl.on("click", function () {
     
     location.reload();
 })
-
 
 // -----------------------------------------------
 
