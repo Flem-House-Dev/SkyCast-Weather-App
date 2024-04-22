@@ -77,14 +77,16 @@ function getCurrentWeather(lat, lon) {
         .then(function (data) {
             console.log('Get current weather .....................................');
             console.log(data); 
-         
+
             let imgSrc = $.parseHTML(`
-            <div class = "card shadow">
+            <div class = "card shadow ">
             <img src = "https://openweathermap.org/img/w/${data.weather[0].icon}.png" alt = "" data-toggle = "tooltip" title = "${data.weather[0].main}"/>
             </div>
             `)
 
+            
             $('#current-date').text(dayjs().format('ddd, MMM D, YYYY'))
+            $('#current-conditions').text(`${data.weather[0].description}`)
             $('#current-temp').text(`Current temp: ${parseInt(data.main.temp)}° F`);
             $('#hi-current-temp').text(`Hi: ${parseInt(data.main.temp_max)}° F`);
             $('#lo-current-temp').text(`Lo: ${parseInt(data.main.temp_min)}° F`)
@@ -130,10 +132,14 @@ function renderCard(cardsContainer, forecastData) {
     let forecastCard = $.parseHTML(`
         <div class="card col-12 col-xl-2 shadow d-flex my-4 ">
         
-        <div class="card-body">
+        <div class="card-body p-2">
             <h3 class="card-title">Title</h4>
-            <img class="card-img-top w-50  border-bottom border-2 mb-2 data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "forecast conditions" />
+            <img class="card-img-top w-50    data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "forecast conditions" />
             <p  class=" card-text">
+            <p  class="card-text border-bottom border-2 pb-2" id="">
+            
+            <span id="forecast-description"></span>
+            </p>
             Temp: </br>
     
             <span id="forecast-hi-temp"></span></br>
@@ -153,6 +159,8 @@ function renderCard(cardsContainer, forecastData) {
     // console.log("Get forecast temp ............................");
     // console.log(forecastData.dt);
 
+    let forecastConditions = forecastData.weather[0].main;
+    let forecastDescription = forecastData.weather[0].description;
     let forecastDate = dayjs.unix(forecastData.dt).format('ddd, MMM D, YYYY');
     let forecastTemp = parseInt(forecastData.main.temp);
     let forecastHiTemp = parseInt(forecastData.main.temp_max);
@@ -165,6 +173,8 @@ function renderCard(cardsContainer, forecastData) {
 
     $(forecastCard).find(".card-img-top").attr("src", imgSrc);
     $(forecastCard).find(".card-title").text(forecastDate);
+    $(forecastCard).find('#forecast-conditions').text(forecastConditions);
+    $(forecastCard).find('#forecast-description').text(forecastDescription);
     $(forecastCard).find('#forecast-temp').text(`${forecastTemp}° F`);
     $(forecastCard).find('#forecast-hi-temp').text(`Hi: ${forecastHiTemp}° F`);
     $(forecastCard).find('#forecast-lo-temp').text(`Lo: ${forecastLoTemp}° F`);
@@ -308,7 +318,11 @@ clearSavedListBtnEl.on("click", function () {
 $(document).ready(function () {
     let savedCity = JSON.parse(localStorage.getItem('Saved-To-Storage'));
     let printedCity = JSON.parse(localStorage.getItem('Saved-To-Storage'));
+    
+    
     apiCalls(savedCity, printedCity);
+    
+
     $('[data-toggle="tooltip"]').tooltip();
 
     loadSavedCities();
