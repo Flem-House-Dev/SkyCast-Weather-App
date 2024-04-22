@@ -45,8 +45,8 @@ function getCoordingates(city, callback) {
         })
 
         .then(function (data) {
-            console.log('Get coordingates .....................................');
-            console.log(data);
+            // console.log('Get coordingates .....................................');
+            // console.log(data);
         
             lat = data[0].lat;
             lon = data[0].lon;
@@ -85,10 +85,14 @@ function getCurrentWeather(lat, lon) {
             `)
 
             let currentTemp = parseInt(data.main.temp);
+            
+            // let hiTemp = parseInt(data.main.temp_max);
             let today = dayjs();
 
             $('#current-date').text(today.format('ddd, MMM D, YYYY'))
             $('#current-temp').text(`Current temp: ${currentTemp}° F`);
+            $('#hi-current-temp').text(`Hi: ${parseInt(data.main.temp_max)}° F`);
+            $('#lo-current-temp').text(`Lo: ${parseInt(data.main.temp_min)}° F`)
             $('#current-icon').empty();
             $('#current-icon').append(imgSrc);
             $('#current-wind-speed').text(`Wind: ${data.wind.speed} mph`);
@@ -111,24 +115,28 @@ function getForecast(lat, lon, callback) {
             console.log(data);
             $('#forecast-cards-container').empty();
 
-            let currentTime = dayjs().format('h');
-            console.log(currentTime);
-            if (currentTime <= 8) {
-                logLoop(3)
-            } else if (currentTime > 8 && currentTime <=16) {
-                logLoop(6)
-            } else {
-                logLoop(9)
-            }
+            // let currentTime = dayjs().format('H');
+            // let currentTime = 8;
+           
+            // if (currentTime <= 8) {
+            //     logLoop(6)
+            // } else if (currentTime > 8 && currentTime <=16) {
+            //     logLoop(6)
+            // } else {
+            //     logLoop(6)
+            // }
 
-            function logLoop(loopI) {  
-            for (let i = loopI; i < data.list.length; i += 8) {
-                        let forecast = data.list[i].main
-                        let day = `Day ${i / 8 + 1}:`;  
+
+        //    console.log(currentTime);
+
+            // function logLoop(loopI) {  
+            for (let i = 7; i < data.list.length; i += 8) {
+                        // let forecast = data.list[i].main
+                        // let day = `Day ${i / 8 + 1}:`;  
                 console.log(data.list[i].dt_txt);
                         renderCard($('#forecast-cards-container'), data.list[i]);
                     }
-                }
+                // }
             
             if (typeof callback == 'function') {
                 callback();
@@ -146,9 +154,20 @@ function renderCard(cardsContainer, forecastData) {
         <div class="card-body">
             <h3 class="card-title">Title</h4>
             <img class="card-img-top border-bottom border-2 mb-2  " data-toggle="tooltip" title="${forecastData.weather[0].main}" src = "" alt = "Current conditions" />
-            <p id="forecast-temp" class=" card-text">Text</p>
-            <p id="forecast-wind" class="card-text">Text</p>
-            <p id="forecast-humidity" class="card-text">Text</p>
+            <p  class=" card-text">
+            Temp: </br>
+    
+            <span id="forecast-hi-temp"></span></br>
+            <span id="forecast-lo-temp"></span>
+            </p>
+            <p class="card-text">
+            Wind Speed: </br>
+            <span id="forecast-wind"></span>
+            </p>
+            <p class="card-text">
+            Humidity: </br>
+            <span id="forecast-humidity"></span>
+            </p>
         </div>
         </div>`);
 
@@ -157,6 +176,8 @@ function renderCard(cardsContainer, forecastData) {
 
     let forecastDate = dayjs.unix(forecastData.dt).format('MMM D, YYYY');
     let forecastTemp = parseInt(forecastData.main.temp);
+    let forecastHiTemp = parseInt(forecastData.main.temp_max);
+    let forecastLoTemp = parseInt(forecastData.main.temp_min);
     let forecastWind = parseInt(forecastData.wind.speed);
     let forecastHumidity = forecastData.main.humidity;
     // console.log(forecastTemp);
@@ -165,9 +186,11 @@ function renderCard(cardsContainer, forecastData) {
 
     $(forecastCard).find(".card-img-top").attr("src", imgSrc);
     $(forecastCard).find(".card-title").text(forecastDate);
-    $(forecastCard).find('#forecast-temp').text(`Temp: ${forecastTemp}° F`);
-    $(forecastCard).find('#forecast-wind').text(`Wind speed: ${forecastWind} mph`);
-    $(forecastCard).find('#forecast-humidity').text(`Humidity: ${forecastHumidity}%`);
+    $(forecastCard).find('#forecast-temp').text(`${forecastTemp}° F`);
+    $(forecastCard).find('#forecast-hi-temp').text(`Hi: ${forecastHiTemp}° F`);
+    $(forecastCard).find('#forecast-lo-temp').text(`Lo: ${forecastLoTemp}° F`);
+    $(forecastCard).find('#forecast-wind').text(`${forecastWind} mph`);
+    $(forecastCard).find('#forecast-humidity').text(`${forecastHumidity}%`);
     
     $(cardsContainer).append(forecastCard);
 }
