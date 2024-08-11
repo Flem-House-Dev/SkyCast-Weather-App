@@ -4,7 +4,7 @@
 This handy weather app allows the user to see the current weather conditions of a city as well as the 5-day forcast.
 ## Installation
 
-Use this link to visit [SkyCast Weather](https://jfleming963.github.io/SkyCast-Weather-App/).
+Use this link to visit [SkyCast Weather](https://flem-house-dev.github.io/SkyCast-Weather-App/).
 
 ## Usage
 Type a city name into the Search input, and select the `See Weather` button. 
