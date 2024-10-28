@@ -1,21 +1,38 @@
 # SkyCast Weather ⛅
 
-## Description
-This handy weather app allows the user to see the current weather conditions of a city as well as the 5-day forcast.
-## Installation
+## Description  
+SkyCast Weather is a responsive weather application that allows users to view the current weather conditions of any city along with a 5-day forecast. The app ensures a seamless experience on both desktop and mobile devices.
 
-Use this link to visit [SkyCast Weather](https://jfleming963.github.io/SkyCast-Weather-App/).
+## Tech Stack  
+- **Frontend**: HTML, CSS, JavaScript, jQuery  
+- **UI Framework**: Bootstrap  
+- **API**: OpenWeather RESTful API  
+- **Deployment**: GitHub Pages  
+- **Storage**: Local Storage for saving search history across sessions  
 
-## Usage
-Type a city name into the Search input, and select the `See Weather` button. 
-Searches are saved locally, and they can be recalled by selecting from the `Saved Searches` dropdown-select menu. User also has the option of clearing search history by selecting the `Clear Saved List` button.
-## Credits
-n/a
-## License 
+## Access  
+You can try the live application here: [SkyCast Weather](https://jfleming963.github.io/SkyCast-Weather-App/).
 
-Please refer to the LICENSE in the repo.
+## Usage  
+1. **Search for a City**:  
+   Enter a city name in the search input field and click the **See Weather** button to display current conditions and a 5-day forecast.  
 
-### Desktop:
-![desktop-screenshot](./assets/images/screenshot_desktop.PNG "desktop screenshot")
-### Mobile:
+2. **Saved Searches**:  
+   Searches are stored locally and can be accessed from the **Saved Searches** dropdown menu.  
+
+3. **Clear Search History**:  
+   Use the **Clear Saved List** button to remove all saved searches from local storage.
+
+## Screenshots  
+### Desktop View  
+![desktop-screenshot](./assets/images/screenshot_desktop.PNG "desktop screenshot")  
+
+### Mobile View  
 ![mobile-screenshot](./assets/images/screenshot_mobile.PNG "mobile screenshot")
+
+## Credits  
+- **API Provider**: OpenWeather  
+- **Icons**: Bootstrap Icons
+
+## License  
+This project is licensed under the terms outlined in the LICENSE file.
