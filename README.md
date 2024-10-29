@@ -36,3 +36,4 @@ You can try the live application here: [SkyCast Weather](https://jfleming963.git
 
 ## License  
 This project is licensed under the terms outlined in the LICENSE file.
+
