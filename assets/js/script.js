@@ -99,31 +99,68 @@ function getCurrentWeather(lat, lon) {
 
 // ---------------------------------------------------------------------------------
 
+// function getForecast(lat, lon, callback) {
+//     const requestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
+
+//     fetch(requestUrl)
+//         .then(function (response) {
+//             return response.json();
+//         })
+
+//         .then(function (data) {
+//             console.log('Get forecast .....................................');
+//             console.log(data);
+//             $('#forecast-cards-container').empty();
+
+//         //    console.log(currentTime);
+
+//             for (let i = 7; i < data.list.length; i += 8) {
+//                 console.log(data.list[i].dt_txt);
+//                         renderCard($('#forecast-cards-container'), data.list[i]);
+//                     }
+
+//             if (typeof callback == 'function') {
+//                 callback();
+//             }
+//         });
+// };
+
 function getForecast(lat, lon, callback) {
-    const requestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
+  const requestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=0a2ac5dbbeb08b5bafd134ce15a7e8c5`;
 
-    fetch(requestUrl)
-        .then(function (response) {
-            return response.json();
-        })
+  fetch(requestUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log('Get forecast .....................................');
+      console.log(data);
+      $('#forecast-cards-container').empty();
 
-        .then(function (data) {
-            console.log('Get forecast .....................................');
-            console.log(data);
-            $('#forecast-cards-container').empty();
+      // Group the forecast data by date
+      const forecastByDate = {};
+      data.list.forEach((item) => {
+        const date = dayjs.unix(item.dt).format('YYYY-MM-DD');
+        if (!forecastByDate[date]) {
+          forecastByDate[date] = [];
+        }
+        forecastByDate[date].push(item);
+      });
 
-        //    console.log(currentTime);
+      // Filter to only the next 5 days
+      const nextFiveDays = Object.keys(forecastByDate).slice(0, 5);
 
-            for (let i = 7; i < data.list.length; i += 8) {
-                console.log(data.list[i].dt_txt);
-                        renderCard($('#forecast-cards-container'), data.list[i]);
-                    }
-            
-            if (typeof callback == 'function') {
-                callback();
-            }
-        });
-};
+      // Render one card per day for the next 5 days
+      nextFiveDays.forEach((date) => {
+        const middleIndex = Math.floor(forecastByDate[date].length / 2);
+        renderCard($('#forecast-cards-container'), forecastByDate[date][middleIndex]);
+      });
+
+      if (typeof callback == 'function') {
+        callback();
+      }
+    });
+}
 
 // ---------------------------------------------------------------------------------
 
