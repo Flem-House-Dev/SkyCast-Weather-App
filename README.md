@@ -11,7 +11,7 @@ SkyCast Weather is a responsive weather application that allows users to view th
 - **Storage**: Local Storage for saving search history across sessions  
 
 ## Access  
-You can try the live application here: [SkyCast Weather](https://jfleming963.github.io/SkyCast-Weather-App/).
+You can try the live application here: [SkyCast Weather](https://flem-house-dev.github.io/SkyCast-Weather-App/).
 
 ## Usage  
 1. **Search for a City**:  
