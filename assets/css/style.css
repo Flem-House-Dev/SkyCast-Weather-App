@@ -9,7 +9,7 @@
 .header {
     background-image: url(../images/clouds.jpg);
     background-size: cover;
-    background-position: center;
+    background-position: bottom;
     background-repeat: no-repeat;
     color: white;
     text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.5);
